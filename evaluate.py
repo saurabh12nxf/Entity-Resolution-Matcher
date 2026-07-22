@@ -108,6 +108,14 @@ def find_disagreements(messy_df, string_pred_df, embedding_pred_df, limit=5):
         true_match = row['true_match_id']
         
         # Determine which is correct (FIX BUG 2: Handle true negatives properly)
+        # Convert pandas NaN to None for consistent comparison
+        if pd.isna(true_match):
+            true_match = None
+        if pd.isna(string_pred):
+            string_pred = None
+        if pd.isna(embedding_pred):
+            embedding_pred = None
+            
         # For true negatives (true_match is None), correctly predicting None is CORRECT
         if true_match is None:
             # True negative case
